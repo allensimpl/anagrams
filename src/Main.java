@@ -1,26 +1,29 @@
+import javax.swing.*;
+import javax.swing.plaf.synth.SynthDesktopIconUI;
 import java.util.Scanner;
 
 public class Main {
-    public static boolean anagramChecker(String firstString,String secondString){
-        int[] characters = new int[256];
-        if(firstString.length()!=secondString.length()){
-            return false;
-        }
-        for(int i=0;i<=firstString.length()-1;i++){
-            int x = firstString.charAt(i);
-            characters[x]++;
-        }
-        for(int i=0;i<=secondString.length()-1;i++){
-            int x = secondString.charAt(i);
-            characters[x]--;
-        }
-
-        for(int i=0;i<=255;i++){
-            if(characters[i]!=0){
-                return false;
+    public static String stringSorter(String testString,int n){
+        char[] a = testString.toCharArray();
+        for(int i=0;i<=n-2;i++){
+            for(int j=0;j<=n-2-i;j++){
+                    if(a[j]>a[j+1]){
+                        char temp = a[j];
+                        a[j] = a[j+1];
+                        a[j+1] = temp;
+                    }
             }
         }
-        return true;
+        String testB = new String(a);
+        return testB;
+    }
+    public static boolean anagramChecker(String firstString,String secondString){
+        String sortedFirstString = stringSorter(firstString,firstString.length());
+        String sortedSecondString = stringSorter(secondString,secondString.length());
+        if(sortedFirstString.equals(sortedSecondString)){
+            return true;
+        }
+        return false;
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -28,6 +31,10 @@ public class Main {
         String firstString = sc.nextLine();
         System.out.println("Enter the second string");
         String secondString = sc.nextLine();
+        if(firstString.length()!=secondString.length()){
+            System.out.println("It is not Anagram");
+            return;
+        }
         boolean anagramResult = anagramChecker(firstString,secondString);
         if(anagramResult){
             System.out.println("It is Anagram");
